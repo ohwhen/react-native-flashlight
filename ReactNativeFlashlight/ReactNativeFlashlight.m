@@ -15,7 +15,7 @@
 RCT_EXPORT_MODULE()
 
 // Persist data
-RCT_EXPORT_METHOD(turnFlashlight:(bool)on
+RCT_EXPORT_METHOD(turnFlashlight:(BOOL)on
                   errorCallback:(RCTResponseSenderBlock)failureCallback
                   callback:(RCTResponseSenderBlock)successCallback) {
 
