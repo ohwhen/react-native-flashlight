@@ -35,8 +35,29 @@ RCT_EXPORT_METHOD(turnFlashlight:(BOOL)on
 
     }
 
-    // Handle the flashlightOff case
+    // Turn Flashlight on
     if (on) {
+
+      // Acquire a reference to the device
+      AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+
+      // Configure the flashlight to be on
+      [device lockForConfiguration:nil];
+      [device setTorchMode:AVCaptureTorchModeOn];
+      [device setFlashMode:AVCaptureFlashModeOn];
+      [device unlockForConfiguration];
+
+      // Show success message that screen is now in sleep mode
+      NSDictionary *resultsDict = @{
+                                    @"success" : @YES,
+                                    @"successMsg"  : @"Flashlight should now be turned on."
+                                    };
+
+      // Call the JavaScript sucess handler
+      successCallback(@[resultsDict]);
+      return;
+
+    } else {
 
         // Acquire a reference to the device
         AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -57,27 +78,6 @@ RCT_EXPORT_METHOD(turnFlashlight:(BOOL)on
         successCallback(@[resultsDict]);
         return;
 
-    } else {
-
-        // Acquire a reference to the device
-        AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
-
-        // Configure the flashlight to be on
-        [device lockForConfiguration:nil];
-        [device setTorchMode:AVCaptureTorchModeOn];
-        [device setFlashMode:AVCaptureFlashModeOn];
-        [device unlockForConfiguration];
-
-        // Show success message that screen is now in sleep mode
-        NSDictionary *resultsDict = @{
-                                      @"success" : @YES,
-                                      @"successMsg"  : @"Flashlight should now be turned on."
-                                      };
-
-        // Call the JavaScript sucess handler
-        successCallback(@[resultsDict]);
-        return;
-
     }
 }
 
@@ -92,6 +92,5 @@ RCT_EXPORT_METHOD(turnFlashlight:(BOOL)on
     }
     return false;
 }
-
 
 @end
